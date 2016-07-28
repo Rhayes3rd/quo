@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Sports Ticker Directive Demo</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <link rel="stylesheet" type="text/css" href="styles/sportsticker.css">
+        <script src="scripts/prefix-free-min.js"></script>
+        <script src="scripts/prefix-free-dynamic-dom-min.js"></script>
+   
+   
+   		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:900&text=ABCDEFGHIJKLMNOPQRSTUVWXYZ' rel='stylesheet' type='text/css'>
+    	<link href="../css/style.css" rel="stylesheet" type="text/css">
+    	<link href="../css/bigvideo.css" rel="stylesheet" type="text/css">
+    	</head>
+    <body>
+        <div><img src="img/quovadus.png" width="302" height="42" class="titleTop">
+<!---->
+    <div class="nav2" >
+    	<header class="scroll ">
+          <nav>
+            <a href="javascript:void(0);"class="nav-link" id="01" divId="div1">PROFILE</a>
+            <a href="javascript:void(0);" class="nav-link" id="03" divId="div3">NEWS</a>
+            <a href="javascript:void(0);" class="nav-link" id="04" divId="div4">ENTERTAINMENT</a>
+            <a href="javascript:void(0);" class="nav-link" id="05" divId="div5">SPORTS</a>
+       	  </nav>
+       </header> 
+	</div>
+<!---->
+     <div class="nav3 box" >
+        <ul class="video-list">
+           <li><a href="javascript:void(0);" rel="river" class="playlist-btn" name= "HongKong">MOST VIEWED</a></li>
+			<li><a href="javascript:void(0);" rel="FireworksSlowMotionH264" class="playlist-btn"  name= "CloseupWaterfall_h264">		HOTTEST</a></li>
+			<li><a href="/vids/frontier.mp4" class="playlist-btn" name= "HongKong">FUNNY</a></li>
+        </ul>
+    </div>
+<!---->
+      <div class="nav box" id="div1">
+        <ul class="video-list">
+           <li><a href="javascript:void(0);" rel="gilScottHeron" class="playlist-btn" name= "gilScottHeron">gilScottHeron</a></li>
+			<li><a href="javascript:void(0);" rel="HongKong" class="playlist-btn"  name= "HongKong">HongKong</a></li>
+			<li><a href="/vids/frontier.mp4" class="playlist-btn" name= "HongKong">1 SUB3</a></li>
+        </ul>
+    </div>
+<!---->    
+        <div class="nav box" id="div2">
+        <ul class="video-list">
+           <li><a href="javascript:void(0);" rel="river" class="playlist-btn" name= "HongKong">2 SUB1</a></li>
+			<li><a href="javascript:void(0);" rel="FireworksSlowMotionH264" class="playlist-btn"  name= "CloseupWaterfall_h264">2 SUB2</a></li>
+			<li><a href="/vids/frontier.mp4" class="playlist-btn" name= "HongKong">2 SUB3</a></li>
+        </ul>
+    </div>
+<!----> 
+
+        <!--sportsticker directive-->
+        <div ng-app="sportsTickerDemo" ng-controller="TickerFeedCtrl">
+            <sportsticker feed="feed" message-delay="4000" scroll-speed-factor="6.25"></sportsticker>
+        </div>
+
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <script src="scripts/sportsTickerDemo.js"></script>
+        <script src="scripts/sportsTickerModule.js"></script>
+
+
+
+    <!-- BigVideo Dependencies -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="js/jquery-1.7.2.min.js"><\/script>')</script>
+    <script src="js/jquery-ui-1.8.22.custom.min.js"></script>
+    <script src="js/jquery.imagesloaded.min.js"></script>
+    <script src="http://vjs.zencdn.net/4.0/video.js"></script>
+
+    <!-- BigVideo -->
+    <script src="js/bigvideo.js"></script>
+
+    <!-- Demo -->
+<script>
+        $(function() {
+			$(".nav").hide();
+              Modernizr.load;
+	   		var isTouch = Modernizr.touch;
+            // Use Modernizr to detect for touch devices, 
+            // then serve them alternate background image content
+           
+            
+            // vars for auto hiding
+            var isShowingPlaylist = false;
+            var isHidden = false;
+            var autoHideTimer;
+            var $showContentButton = $('<div class="touchscreen-show-button box">Back</div>')
+            
+            // initialize BigVideo
+			
+  var BV = new $.BigVideo({useFlashForFirefox:false});
+  BV.init();
+            
+            // show background image
+            BV.show('img/background-dock.jpg');
+
+			$(".nav-link").bind("click", function(e) {
+    			e.preventDefault();
+				$(".nav").hide();
+				$(".nav3").hide();
+	
+    			var divId= $(this).attr("divId");
+    			$("#" + divId).show();
+});
+            // Playlist button click starts video, enables autohiding
+            $('.playlist-btn').bind('click', function(e) {
+                e.preventDefault();
+				
+				var $target= $(this).attr("rel");
+				var $content_path = "http://localhost:8888/QUO/vids/";
+				var player        = _V_("#big-video-vid");
+				var $ads          =$(this).attr("name")
+				var typeV = "";
+				
+				player.pause();
+				
+					if (Modernizr.video) {   
+  			if (Modernizr.video.webm) {	
+						var typeV = ".mp4"
+ 			 } else if (Modernizr.video.ogg) { 
+  						var typeV = ".ogv"			
+ 			 } else if (Modernizr.video.h264){
+    					var typeV = ".webm"			
+ 		 }
+}
+      		
+				
+				var $ctt = $content_path+$target+typeV;
+                	BV.show($ctt);
+				
+		
+				var vidNext = document.getElementById("big-video-vid_html5_api");
+					vidNext.onended = function() {
+    					//alert("The audio has ended");
+						var $cttAds = $content_path+'gilScottHeron.mp4';
+                			BV.show($cttAds);
+			};		
+                autoHide(true);
+                isShowingPlaylist = true;
+				
+				
+	   
+            });
+			
+
+            // Turn off autohiding when mouse is over the nav 
+            // (not necessary for touchscreens)
+            if (!isTouch) {
+                $('.nav','nav2')
+                    .on('mouseover', function() {
+                        if (isShowingPlaylist) autoHide(false);
+                    })
+                    .on('mouseout', function() {
+                        if (isShowingPlaylist) autoHide(true);
+                    });
+            } else {
+                // add button to show content on touchscreen
+                $('body').prepend($showContentButton);
+            }
+
+            function autoHide(enable) {
+                if (enable) {
+                    isHidden = true;
+                    $('body').on('mousemove', function(event){
+                        if (isHidden) {
+                            isHidden = false;
+                            $('.nav,.nav2').removeClass('transparent');
+                        }
+                        clearTimeout(autoHideTimer);
+                        autoHideTimer = setTimeout(function() {
+                            isHidden = true;
+                            $('.nav,.nav2, .main').addClass('transparent');
+                        }, 1000);
+                    });    
+                } else {
+                    clearTimeout(autoHideTimer);
+                    $('body').off('mousemove');
+                    $('.nav,.nav2').removeClass('transparent');
+                }
+            }
+        });
+    </script>
+        
+    </body>
+</html>
